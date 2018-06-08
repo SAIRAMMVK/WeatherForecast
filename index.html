@@ -30,9 +30,32 @@
             <h5 id="weather_description"></h5>
         </div>
         <div class="contents-container">
-            <img id="icon"/>
-            <span id="tempvalue"></span>
+           <div class="content1">
+                <img id="icon"/>
+                <span id="tempvalue"></span>
+                <sup><span class="wob_t" id="cent" aria-label="°Celsius" onclick="convertC()" aria-disabled="true" role="button">°C</span>
+                <span aria-label="°Fahrenheit" id="fah"  role="button" onclick="convertF()">|°F</span></sup>
+            </div>
+            <div class="content2">
+                <ul>
+                    <li id="precp">Precipitation:71%</li>
+                    <li id="humidity">Humidity:</li>
+                    <li id="wind">Wind:</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+        <div class="charts-container">
+            <div class="buttons_position">
+                <span>
+                    <button id="temp1">Temperature</button>
+                    <button id="wind1">Wind</button>
+                    <button id="prep1">Precipitation</button>
+                </span>
+            </div>
+            <div id="chart-container">
 
+            </div>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

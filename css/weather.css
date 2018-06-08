@@ -1,0 +1,22 @@
+#tempvalue{
+    font-size: 50px;
+}
+img{
+    width: 80px;
+    
+}
+.content1{
+    float: left;
+}
+
+.content2{
+    float: right;
+    margin-right: 300px;
+}
+ul {
+    list-style-type: none;
+  }
+.buttons_position{
+    float:right;
+    margin-right: 300px;
+}
