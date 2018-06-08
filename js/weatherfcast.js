@@ -7,22 +7,25 @@ function checkInput(){
         $("#btn").prop("disabled",true);    
     }
 }
-var value,newvalue;
+var value,newvalue,windspd;
 function convertC(){
     
     newval = Math.ceil((newvalue -32) * 0.5556) ;
     $("#tempvalue").html(newval);
+    
 
 }
 function convertF(){
     newvalue = Math.ceil(value * 1.8 +32) ;
-    //alert(value);
     $("#tempvalue").html(newvalue);
+    console.log(windspd);
 }
 
 $("#btn").click(function ()
 
     {
+        $("div").removeClass("hide-contents");
+        
         var city = $("#cityName").val();
         $("#cityid").html(city);
         var tmpdes;
@@ -32,10 +35,8 @@ $("#btn").click(function ()
         url: 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&APPID=ef0107f6f8d7d8932a3c0d617ef9b1ec',
         success : function(output){
             console.log('in success scenario');
-            console.log(output);
-            // Timestamp = output.list.map ((ele) => moment(ele.dt * 1000).format('dddd, h:mm a'));
-            // console.log(Timestamp);
-             $("#timestamp").html("getting temperatrue");
+           console.log(output);
+            console.log(moment(output.dt).format('dddd, h:mm a'));
             tmpdes = output.weather[0].description;
              $("#weather_description").html(output.weather[0].description);
              if(tmpdes==="haze"){
@@ -47,6 +48,7 @@ $("#btn").click(function ()
             humidity = output.main.humidity+"%";
             console.log(humidity);
             windspeed =  output.wind.speed+"km/h";
+            $("#timestamp").html(moment(output.dt * 1000).format('dddd, h:mm a'));
             console.log(windspeed);
             $("#wind").append(windspeed);
             $("#humidity").append(humidity);
@@ -70,11 +72,13 @@ $("#btn").click(function ()
             success : (output)=>{
                 
                 console.log(output);
-                currentDate = output.list.map((ele) => moment(ele.dt * 1000).format('h:mm a'));
+                currentDate = output.list.map((ele) => moment(ele.dt * 1000).format('dddd, h a'));
                 console.log(currentDate);
+                today = currentDate[0];
                 currentTemperature = output.list.map(ele => Math.round(ele.main.temp - 273));
-                console.log(currentTemperature);
-                plotChart(currentTemperature, currentDate);
+                currentTemp =currentTemperature.slice(0,6);
+                console.log(currentTemp);
+                plotChart(currentTemp, currentDate);
             },
             error : (output)=>{
                 console.log(output);
@@ -84,7 +88,7 @@ $("#btn").click(function ()
         const plotChart = (tempArr, datesArr) => {
             Highcharts.chart('chart-container', {
                 chart: {
-                    type: 'spline'
+                    type: 'line'
                 },
                 title: {
                     text: ''
@@ -92,7 +96,7 @@ $("#btn").click(function ()
                 xAxis: {
                     categories: datesArr
                 },
-                yAxis: {
+               yAxis: {
                     title: {
                         text: 'Temperature'
                     },
@@ -105,12 +109,11 @@ $("#btn").click(function ()
                     shared: true
                 },
                 plotOptions: {
-                    spline: {
-                        marker: {
-                            radius: 4,
-                            lineColor: '#666666',
-                            lineWidth: 1
-                        }
+                    line: {
+                        dataLabels: {
+                          enabled: true
+                        },
+                  
                     }
                 },
                 series: [{
@@ -129,6 +132,84 @@ $("#btn").click(function ()
 
 
     })
+
+
+    // wind charts display
+
+    $("#wind1").click(()=>{
+     
+        const city = $("#cityName").val();
+        $.ajax({
+
+            type:"GET",
+            url: `https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=ef0107f6f8d7d8932a3c0d617ef9b1ec`,
+            success : (output)=>{
+                
+                console.log(output);
+                currentDate = output.list.map((ele) => moment(ele.dt * 1000).format('h a'));
+                console.log(currentDate);
+                today = currentDate[0];
+                
+                var current= new Array(40);
+                currentWind= output.list[0].wind.speed;
+                console.log(currentWind);
+                //$("#chart-container").show();
+                plotChart(currentWind, currentDate);
+            },
+            error : (output)=>{
+                console.log(output);
+            }
+        });
+
+        const plotChart = (windArr, datesArr) => {
+            Highcharts.chart('chart-container', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: ''
+                },
+                xAxis: {
+                    categories: datesArr
+                },
+                yAxis: {
+                    title: {
+                        text: 'WindSpeed'
+                    },
+                    labels: {
+                        formatter: function () { return this.value + '°'; }
+                    }
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                },
+                series: [{
+                    name: cityName,
+                    marker: {
+                        symbol: 'square'
+                    },
+                    data: windArr
+    
+                }]
+            });
+        }
+
+
+
+
+
+    })
+
 
     
 })

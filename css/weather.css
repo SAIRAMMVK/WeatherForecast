@@ -20,3 +20,6 @@ ul {
     float:right;
     margin-right: 300px;
 }
+.hide-contents{
+    display: none;
+}
