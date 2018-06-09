@@ -105,14 +105,11 @@ $("#btn").click(function ()
                 $("#4").html(moment(output.list[20].dt * 1000).format('dddd'));
                 $("#9").attr('src',icon1);
                 $("#14").html(Math.ceil((output.list[20].main.temp-273)));
-
                 var iconId1 = output.list[28].weather[0].icon;
                 var icon1 =  "http://openweathermap.org/img/w/" + iconId1 + ".png";
                 $("#5").html(moment(output.list[28].dt * 1000).format('dddd'));
                 $("#10").attr('src',icon1);
                 $("#15").html(Math.ceil((output.list[28].main.temp-273)));
-
-
                 plotChart(currentTemp, currentDate);
 
             },
@@ -183,13 +180,13 @@ $("#btn").click(function ()
                 console.log(currentDate);
                 console.log(output.list[0].wind.speed);
                 var winds = new Array(38);
-                for(var y=0;y<36;y++){
+                for(var y=0;y<35;y++){
                     winds[y]=(output.list[y].wind.speed);
                    
                 }
 
                 var degrees = new Array(38);
-                for(var y=0;y<36;y++){
+                for(var y=0;y<35;y++){
                     degrees[y]=output.list[y].wind.deg;
                    
                 }
