@@ -23,3 +23,20 @@ ul {
 .hide-contents{
     display: none;
 }
+.day-temp-container{
+    margin: 10%;
+}
+.day-container{
+    justify-content: space-evenly;
+}
+.inner{
+    display: flex;
+    justify-content: space-evenly;
+    
+    
+}
+.one{
+    display: flex;
+    justify-content: space-evenly;
+
+}

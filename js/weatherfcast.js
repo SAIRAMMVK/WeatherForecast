@@ -1,5 +1,5 @@
 ﻿
-var value,newvalue,windspd;
+var value,newvalue,windspd,values;
 
 function checkInput(){
 
@@ -12,7 +12,6 @@ function convertC(){
     newval = Math.ceil((newvalue -32) * 0.5556) ;
     $("#tempvalue").html(newval);
 }
-
 
 
 function convertF(){
@@ -55,6 +54,14 @@ $("#btn").click(function ()
             $("#wind").html("Windspeed :"+windspeed);
             $("#humidity").html("Humididty :"+humidity);
 
+
+            /* LAST DIVISION VALUES*/
+
+
+            $("#1").html(moment(output.dt * 1000).format('dddd'));
+            $("#6").attr('src',icon);
+            values = $("#11").html(Math.ceil((output.main.temp-273)));
+
         },
 
         error  : function (err){
@@ -80,7 +87,34 @@ $("#btn").click(function ()
                 currentTemperature = output.list.map(ele => Math.round(ele.main.temp - 273));
                 currentTemp =currentTemperature.slice(0,10);
                 console.log(currentTemp);
+
+                var iconId1 = output.list[5].weather[0].icon;
+                var icon1 =  "http://openweathermap.org/img/w/" + iconId1 + ".png";
+                
+                
+                $("#2").html(moment(output.list[5].dt * 1000).format('dddd'));
+                $("#7").attr('src',icon1);
+                $("#12").html(Math.ceil((output.list[5].main.temp-273)));
+                var iconId1 = output.list[12].weather[0].icon;
+                var icon1 =  "http://openweathermap.org/img/w/" + iconId1 + ".png";
+                $("#3").html(moment(output.list[12].dt * 1000).format('dddd'));
+                $("#8").attr('src',icon1);
+                $("#13").html(Math.ceil((output.list[12].main.temp-273)));
+                var iconId1 = output.list[20].weather[0].icon;
+                var icon1 =  "http://openweathermap.org/img/w/" + iconId1 + ".png";
+                $("#4").html(moment(output.list[20].dt * 1000).format('dddd'));
+                $("#9").attr('src',icon1);
+                $("#14").html(Math.ceil((output.list[20].main.temp-273)));
+
+                var iconId1 = output.list[28].weather[0].icon;
+                var icon1 =  "http://openweathermap.org/img/w/" + iconId1 + ".png";
+                $("#5").html(moment(output.list[28].dt * 1000).format('dddd'));
+                $("#10").attr('src',icon1);
+                $("#15").html(Math.ceil((output.list[28].main.temp-273)));
+
+
                 plotChart(currentTemp, currentDate);
+
             },
             error : (output)=>{
                 console.log(output);
@@ -149,13 +183,13 @@ $("#btn").click(function ()
                 console.log(currentDate);
                 console.log(output.list[0].wind.speed);
                 var winds = new Array(38);
-                for(var y=0;y<37;y++){
+                for(var y=0;y<36;y++){
                     winds[y]=(output.list[y].wind.speed);
                    
                 }
 
                 var degrees = new Array(38);
-                for(var y=0;y<37;y++){
+                for(var y=0;y<36;y++){
                     degrees[y]=output.list[y].wind.deg;
                    
                 }
