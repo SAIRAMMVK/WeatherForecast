@@ -1,20 +1,20 @@
-﻿function checkInput(){
-    var input = document.getElementById("cityName").value;
-    if(isNaN(input)){
-        $("#btn").prop("disabled",false);
-    }
-    else{
-        $("#btn").prop("disabled",true);    
-    }
-}
+﻿
 var value,newvalue,windspd;
-function convertC(){
-    
-    newval = Math.ceil((newvalue -32) * 0.5556) ;
-    $("#tempvalue").html(newval);
-    
+
+function checkInput(){
+
+    var a=document.getElementById("cityName").value;
+    isNaN(a)?$("#btn").prop("disabled",!1):$("#btn").prop("disabled",!0)
 
 }
+
+function convertC(){
+    newval = Math.ceil((newvalue -32) * 0.5556) ;
+    $("#tempvalue").html(newval);
+}
+
+
+
 function convertF(){
     newvalue = Math.ceil(value * 1.8 +32) ;
     $("#tempvalue").html(newvalue);
@@ -35,7 +35,7 @@ $("#btn").click(function ()
         $.ajax({
 
         type:"GET",
-        url: 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&APPID=ef0107f6f8d7d8932a3c0d617ef9b1ec',
+        url: `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=ef0107f6f8d7d8932a3c0d617ef9b1ec`,
         success : function(output){
             console.log('in success scenario');
            console.log(output);
@@ -78,7 +78,7 @@ $("#btn").click(function ()
                 console.log(currentDate);
                 today = currentDate[0];
                 currentTemperature = output.list.map(ele => Math.round(ele.main.temp - 273));
-                currentTemp =currentTemperature.slice(0,8);
+                currentTemp =currentTemperature.slice(0,10);
                 console.log(currentTemp);
                 plotChart(currentTemp, currentDate);
             },
@@ -129,18 +129,10 @@ $("#btn").click(function ()
                         symbol: 'square'
                     },
                     data: tempArr
-    
                 }]
             });
         }
-
-
-
-
-
     })
-
-
     // wind charts display
 
     $("#wind1").click(()=>{
@@ -168,11 +160,11 @@ $("#btn").click(function ()
                    
                 }
 
-                currentdeg = degrees.slice(0,8);
+                currentdeg = degrees.slice(0,10);
                 /*for(var i=0;i<37;i++){
                    console.log( winds[i]);
                 }*/
-                current = winds.slice(0,8);
+                current = winds.slice(0,10);
                 plotChart(current,currentdeg, currentDate);
             },
             error : (output)=>{
@@ -245,23 +237,8 @@ $("#btn").click(function ()
                     tooltip: {
                         valueSuffix: ' m/s'
                     }
-            
-
-
-
-
-
-    
                 }]
             });
         }
-
-
-
-
-
-    })
-
-
-    
+    })    
 })
