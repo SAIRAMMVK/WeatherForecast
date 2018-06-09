@@ -22,12 +22,15 @@ function convertF(){
 }
 
 $("#btn").click(function ()
-
-    {
+{
         $("div").removeClass("hide-contents");
         
         var city = $("#cityName").val();
-        $("#cityid").html(city);
+        var cityLetter = city;
+        titleCase(cityLetter);
+        function titleCase(letter){
+          $("#cityid").html(letter.charAt(0).toUpperCase() + letter.slice(1));
+        }
         var tmpdes;
         $.ajax({
 
@@ -138,7 +141,7 @@ $("#btn").click(function ()
 
 
     // wind charts display
-/*
+
     $("#wind1").click(()=>{
      
         const city = $("#cityName").val();
@@ -151,13 +154,12 @@ $("#btn").click(function ()
                 console.log(output);
                 currentDate = output.list.map((ele) => moment(ele.dt * 1000).format('h a'));
                 console.log(currentDate);
-                today = currentDate[0];
-                
-                var current= new Array(40);
-                currentWind= output.list[0].wind.speed;
-                console.log(currentWind);
-                //$("#chart-container").show();
-                plotChart(currentWind, currentDate);
+                var currentWind= new Array(38);
+                for(var i=0;i<38;i++){
+                    currentWind[i] = output.list[i].wind.speed;
+                }
+                current = currentWind.slice(0,8);
+                plotChart(current, currentDate);
             },
             error : (output)=>{
                 console.log(output);
@@ -167,7 +169,7 @@ $("#btn").click(function ()
         const plotChart = (windArr, datesArr) => {
             Highcharts.chart('chart-container', {
                 chart: {
-                    type: 'column'
+                    type: 'area'
                 },
                 title: {
                     text: ''
@@ -188,16 +190,19 @@ $("#btn").click(function ()
                     shared: true
                 },
                 plotOptions: {
-                    column: {
-                        marker: {
-                            radius: 4,
-                            lineColor: '#666666',
-                            lineWidth: 1
-                        }
+                    area: {
+                        dataLabels: {
+                          enabled: true
+                        },
+                        series: {
+                            allowPointSelect: true
+                        },
+                  
                     }
                 },
                 series: [{
-                    name: cityName,
+                    name: city,
+                    color: Highcharts.getOptions().colors[6],
                     marker: {
                         symbol: 'square'
                     },
@@ -211,7 +216,7 @@ $("#btn").click(function ()
 
 
 
-    })*/
+    })
 
 
     
