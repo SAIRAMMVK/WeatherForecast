@@ -1,4 +1,4 @@
-function checkInput(){
+﻿function checkInput(){
     var input = document.getElementById("cityName").value;
     if(isNaN(input)){
         $("#btn").prop("disabled",false);
@@ -39,10 +39,9 @@ $("#btn").click(function ()
             console.log(moment(output.dt).format('dddd, h:mm a'));
             tmpdes = output.weather[0].description;
              $("#weather_description").html(output.weather[0].description);
-             if(tmpdes==="haze"){
-                console.log("in loop");
-                    $("#icon").attr("src","images/haze.png");
-            }
+             var iconId = output.weather[0].icon;
+            var icon =  "http://openweathermap.org/img/w/" + iconId + ".png";
+            $('img').attr('src', icon);
             value = Math.ceil((output.main.temp-273));
             $("#tempvalue").html(Math.ceil((output.main.temp-273)));
             humidity = output.main.humidity+"%";
@@ -50,8 +49,8 @@ $("#btn").click(function ()
             windspeed =  output.wind.speed+"km/h";
             $("#timestamp").html(moment(output.dt * 1000).format('dddd, h:mm a'));
             console.log(windspeed);
-            $("#wind").append(windspeed);
-            $("#humidity").append(humidity);
+            $("#wind").html("Windspeed :"+windspeed);
+            $("#humidity").html("Humididty :"+humidity);
 
         },
 
@@ -76,7 +75,7 @@ $("#btn").click(function ()
                 console.log(currentDate);
                 today = currentDate[0];
                 currentTemperature = output.list.map(ele => Math.round(ele.main.temp - 273));
-                currentTemp =currentTemperature.slice(0,6);
+                currentTemp =currentTemperature.slice(0,8);
                 console.log(currentTemp);
                 plotChart(currentTemp, currentDate);
             },
@@ -88,7 +87,7 @@ $("#btn").click(function ()
         const plotChart = (tempArr, datesArr) => {
             Highcharts.chart('chart-container', {
                 chart: {
-                    type: 'line'
+                    type: 'area'
                 },
                 title: {
                     text: ''
@@ -109,15 +108,19 @@ $("#btn").click(function ()
                     shared: true
                 },
                 plotOptions: {
-                    line: {
+                    area: {
                         dataLabels: {
                           enabled: true
+                        },
+                        series: {
+                            allowPointSelect: true
                         },
                   
                     }
                 },
                 series: [{
-                    name: cityName,
+                    name: city,
+                    color: Highcharts.getOptions().colors[6],
                     marker: {
                         symbol: 'square'
                     },
@@ -135,7 +138,7 @@ $("#btn").click(function ()
 
 
     // wind charts display
-
+/*
     $("#wind1").click(()=>{
      
         const city = $("#cityName").val();
@@ -208,7 +211,7 @@ $("#btn").click(function ()
 
 
 
-    })
+    })*/
 
 
     
