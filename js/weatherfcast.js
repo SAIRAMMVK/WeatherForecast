@@ -90,7 +90,8 @@ $("#btn").click(function ()
         const plotChart = (tempArr, datesArr) => {
             Highcharts.chart('chart-container', {
                 chart: {
-                    type: 'area'
+                    type: 'area',
+                    height : 200
                 },
                 title: {
                     text: ''
@@ -100,7 +101,7 @@ $("#btn").click(function ()
                 },
                yAxis: {
                     title: {
-                        text: 'Temperature'
+                        text: 'Temperature(in degree centigrade)'
                     },
                     labels: {
                         formatter: function () { return this.value + '°'; }
@@ -154,22 +155,36 @@ $("#btn").click(function ()
                 console.log(output);
                 currentDate = output.list.map((ele) => moment(ele.dt * 1000).format('h a'));
                 console.log(currentDate);
-                var currentWind= new Array(38);
-                for(var i=0;i<38;i++){
-                    currentWind[i] = output.list[i].wind.speed;
+                console.log(output.list[0].wind.speed);
+                var winds = new Array(38);
+                for(var y=0;y<37;y++){
+                    winds[y]=(output.list[y].wind.speed);
+                   
                 }
-                current = currentWind.slice(0,8);
-                plotChart(current, currentDate);
+
+                var degrees = new Array(38);
+                for(var y=0;y<37;y++){
+                    degrees[y]=output.list[y].wind.deg;
+                   
+                }
+
+                currentdeg = degrees.slice(0,8);
+                /*for(var i=0;i<37;i++){
+                   console.log( winds[i]);
+                }*/
+                current = winds.slice(0,8);
+                plotChart(current,currentdeg, currentDate);
             },
             error : (output)=>{
                 console.log(output);
             }
         });
 
-        const plotChart = (windArr, datesArr) => {
+        const plotChart = (windArr,degArr, datesArr) => {
             Highcharts.chart('chart-container', {
                 chart: {
-                    type: 'area'
+                    type: 'windbarb',
+                    height:200
                 },
                 title: {
                     text: ''
@@ -179,7 +194,7 @@ $("#btn").click(function ()
                 },
                 yAxis: {
                     title: {
-                        text: 'WindSpeed'
+                        text: 'WindSpeed (in m/s)'
                     },
                     labels: {
                         formatter: function () { return this.value + '°'; }
@@ -202,11 +217,40 @@ $("#btn").click(function ()
                 },
                 series: [{
                     name: city,
-                    color: Highcharts.getOptions().colors[6],
-                    marker: {
-                        symbol: 'square'
+                    data: windArr,
+
+                    name: 'Windspeed',
+                    color: Highcharts.getOptions().colors[1],
+                    showInLegend: false,
+                    tooltip: {
+                        valueSuffix: ' m/s'
+                    }
+                }, {
+                    type: 'area',
+                    keys: ['y', 'rotation'], // rotation is not used here
+                    data: windArr,
+                    color: Highcharts.getOptions().colors[0],
+                    fillColor: {
+                        linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [
+                                1,
+                                Highcharts.color(Highcharts.getOptions().colors[0])
+                                    .setOpacity(0.25).get()
+                            ]
+                        ]
                     },
-                    data: windArr
+                    name: 'Wind speed',
+                    tooltip: {
+                        valueSuffix: ' m/s'
+                    }
+            
+
+
+
+
+
     
                 }]
             });
